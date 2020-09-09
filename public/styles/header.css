@@ -1,0 +1,18 @@
+header{
+  height: 400px;
+  width: 100%;
+  display: flex;
+  flex-direction : column;
+  justify-content : center;
+  align-items: center;
+  color: #ffffff;
+  background-color: #e8a127;
+  background-image: url("https://www.transparenttextures.com/patterns/cream-dust.png");
+}
+#header-h2{
+  font-size: 24px;
+  font-weight: 300;
+}
+#header-h2 strong{
+  font-weight: 700;
+}
