@@ -5,11 +5,10 @@ $( document ).ready(function() {
 
    
    if (count >= 0) {
-    $('.counter').html(count);
     $('.counter').removeClass("red");
   } else {
-    $('.counter').html(count);
     $('.counter').addClass("red");
   }
+  $('.counter').html(count);
 });
 });

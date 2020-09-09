@@ -6,13 +6,13 @@ nav{
   color: #ffffff;
   justify-content: space-between;
 }
-#tweeter-nav{
+.tweeter-nav{
   justify-content: start;
   font-family: 'Bungee Inline', cursive;
   font-size: xx-large;
   margin: 1.5em;
 }
-#left-nav {
+.left-nav {
   justify-content : end;
   margin: 1.5em;
 }

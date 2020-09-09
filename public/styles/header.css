@@ -1,4 +1,4 @@
-header{
+.profile{
   height: 400px;
   width: 100%;
   display: flex;
@@ -9,10 +9,10 @@ header{
   background-color: #e8a127;
   background-image: url("https://www.transparenttextures.com/patterns/cream-dust.png");
 }
-#header-h2{
+.profile-h2{
   font-size: 24px;
   font-weight: 300;
 }
-#header-h2 strong{
+.profile-h2 strong{
   font-weight: 700;
 }
