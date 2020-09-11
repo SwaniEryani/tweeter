@@ -79,5 +79,6 @@ The client-side app communicates with a server via AJAX
     - if the user clicks this button they are brought back up to the top of the page
 
 The fianl Project :
-!["screenshot description"](#)
-!["screenshot description"](#)
+!["Showes error msg"](https://github.com/SwaniEryani/tweeter/blob/master/Docs/Screen%20Shot%202020-09-10%20at%209.25.12%20PM.png)
+!["screen recoed"](https://github.com/SwaniEryani/tweeter/blob/master/Docs/screenrecord.gif)
+!["shows the toggle btn"](https://github.com/SwaniEryani/tweeter/blob/master/Docs/Screen%20Shot%202020-09-10%20at%209.30.05%20PM.png)
