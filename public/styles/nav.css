@@ -1,3 +1,4 @@
+
 nav{
   padding: 20px;
   height: 120px;
@@ -17,6 +18,37 @@ nav{
   margin: 1.5em;
 }
 .left-nav {
+  display: flex;
+  flex-direction: column;
   justify-content : end;
   margin: 1.5em;
+}
+.left-nav:hover{
+  cursor: pointer;
+}
+.arrow{
+  height: 15px;
+  width: 10px;
+  align-self: center;
+}
+
+@media screen and (max-width: 1024px){
+  nav{
+    padding: 2rem;
+    height: 8rem;
+    display: flex;
+    background-color: #e8a127;
+    background-image: url("https://www.transparenttextures.com/patterns/cream-dust.png");
+    color: #ffffff;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    width: 100%;
+  }
+  .left-nav {
+    margin: 0.33rem;
+  }
+  .tweeter-nav{
+    margin: 0.33rem;
+  }
 }

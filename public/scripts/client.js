@@ -1,120 +1,142 @@
 /*
- * Client-side JS logic goes here
- * jQuery is already loaded
- * Reminder: Use (and do all your DOM work in) jQuery's document ready function
- */
-const tweetData =[
-  {
-    "user": {
-      "name": "Newton",
-      "avatars": "https://i.imgur.com/73hZDYK.png"
-      ,
-      "handle": "@SirIsaac"
-    },
-    "content": {
-      "text": "If I have seen further it is by standing on the shoulders of giants"
-    },
-    "created_at": 1461116232227
-  },
-  {
-    "user": {
-      "name": "Descartes",
-      "avatars": "https://i.imgur.com/nlhLi3I.png",
-      "handle": "@rd" },
-    "content": {
-      "text": "Je pense , donc je suis"
-    },
-    "created_at": 1461113959088
-  }
-];
-// $(document).ready( () => {
-// const createTweetElement= function (tweetData){
-//   const name = tweetData.user.name;
-//   const text = tweetData.content.text;
-//   const avatars = tweetData.user.avatars;
-//   const handle = tweetData.user.handle;
-//   const created_at = tweetData.created_at;
-//   const content =`<article class="tweets-article">
-//   <header class="tweets-header">
-//     <span>
-//       <img src="${avatars}">
-//       <label>
-//         ${name}
-//       </label>
-//     </span>
-//     <span class="handle">
-//       ${handle}
-//     </span>
-//   </header>
- 
-//   <p class ="tweet-content">
-//     ${text}
-//   </p>
-//   <footer class ="tweets-footer">
-//     <span>10 days ago</span>
-//     <span class= "icons">
-//       <a href=""></a><i class= "fa fa-flag"></i></a>
-//       <a href=""></a><i class= "fa fa-retweet"></i></a>
-//       <a href=""></a><i class= "fa fa-heart"></i></a>
-//     </span>
-//   </footer>
-// </article>`;
-
-// return content;
-// };
-
-// const renderTweets = function(tweets) {
-//   for( const user in tweets){
-//   const $tweet = createTweetElement(tweetData);
-//   $('#tweets-container').append($tweet);
-//   }
-// }
-
-//   renderTweets (tweetData);
-// });
+* Client-side JS logic goes here
+* jQuery is already loaded
+* Reminder: Use (and do all your DOM work in) jQuery's document ready function
+*/
+const escape = function(str) {
+  let div = document.createElement('div');
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+}
 
 const renderTweets = function(tweetData) {
-  for( const tweet of tweetData){
+  const $continer = $('#tweets-container');
+  $continer.empty();
+  for (const tweet of tweetData) {
     const $tweet = createTweetElement(tweet);
-    $('#tweets-container').append($tweet);
-    }
+    $('#tweets-container').prepend($tweet);
+  }
 };
 
-const createTweetElement = function(tweet) {
+const createTweetElement = function (tweet) {
   let name = tweet.user.name;
   let text = tweet.content.text;
   let avatars = tweet.user.avatars;
   let handle = tweet.user.handle;
   let today = new Date();
-  let created_at = today - tweet.created_at;
+  let created = tweet.created_at;
+  const diffTime = Math.abs(today - created);
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   let $tweet = `<article class="tweets-article">
-  <header class="tweets-header">
-    <span>
-      <img src="${avatars}">
-      <label>
-        ${name}
-      </label>
-    </span>
-    <span class="handle">
-      ${handle}
-    </span>
-  </header>
- 
-  <p class ="tweet-content">
-    ${text}
-  </p>
-  <footer class ="tweets-footer">
-    <span>${created_at} days ago</span>
-    <span class= "icons">
-      <a href=""></a><i class= "fa fa-flag"></i></a>
-      <a href=""></a><i class= "fa fa-retweet"></i></a>
-      <a href=""></a><i class= "fa fa-heart"></i></a>
-    </span>
-  </footer>
-</article>`;
+        <header class="tweets-header">
+          <span>
+            <img src="${avatars}">
+            <label>
+              ${name}
+            </label>
+          </span>
+          <span class="handle">
+            ${handle}
+          </span>
+        </header>
+      
+        <p class ="tweet-content">
+          ${escape(text)}
+        </p>
+        <footer class ="tweets-footer">
+          <span>${diffDays} days ago</span>
+          <span class= "icons">
+            <a href=""></a><i class= "fa fa-flag"></i></a>
+            <a href=""></a><i class= "fa fa-retweet"></i></a>
+            <a href=""></a><i class= "fa fa-heart"></i></a>
+          </span>
+        </footer>
+      </article>`;
   return $tweet;
 };
+const loadTweets = function() {
+  $.get('/tweets', function() {
+    $.ajax({
+      url: '/tweets',
+      method: 'GET'
+    }).then((tweet) => renderTweets(tweet));
+  });
 
-$(document).ready( () => {
-renderTweets(tweetData);
+};
+// any post needs a get :P
+//
+// function getTweets() {
+//   $.ajax({
+//     url: '/tweets',
+//     method: 'GET'
+//     }).then((tweet)=>createTweetElement(tweet));
+// }
+
+
+$(document).ready(() => {
+
+  $('.new-tweet').css('visibility', 'hidden');
+  $('.new-tweet').slideUp();
+  $('#Toggle-Button').css('visibility', 'hidden');
+  $('#error-continare').slideUp();
+  $('.tweet-form').on('submit', (evt) => {
+    evt.preventDefault();
+    //ajax POST request
+    let val = $('.tweet-text').val();
+    if (val.length <= 140 && val.length > 0) {
+      $.ajax({
+        url: '/tweets',
+        method: 'POST',
+        data: $(".tweet-form").serialize()
+      }).then(function () {
+        loadTweets();
+        $('.tweet-text').val('');
+        $('#error-continare-').slideUp();
+        $('#error-continare').empty();
+        $('.counter').html('140');
+      }).catch(e => {//.reject (new Error('fail'));
+        alert('<h1>SOMETHING WENT WRONG!!</h1>');
+      });
+    } else if (val === "" || val === null) {
+
+      $('#error-continare').slideDown();
+      $('#error-continare').html('<p class = "error">🤓🤓Where is the tweet I can\'t see it?  </p>');
+
+    } else if (val.length > 140) {
+      $('#error-continare').slideDown();
+      $('#error-continare').html('<p class = "error">😫😫Oh! no I can\'t remember all of this. Please make it shorter! </p>');
+    }
+
+  });
+  // event handler for composer to show the form
+  $('.left-nav').on('click', function() {
+    if ($('.new-tweet').css('visibility') === 'visible'){
+      $('.new-tweet').css('visibility', 'hidden');
+      $('.new-tweet').slideUp();
+    }else {
+      $('.new-tweet').css('visibility', 'visible');
+      $('.tweet-text').focus();
+      $('.new-tweet').slideDown();
+    }
+    
+  });
+
+  // event handler for toggling compose button
+  $(window).scroll(function() {
+    if ($(this).scrollTop() > 100) {
+      $('#Toggle-Button').css('visibility', 'visible');
+      $('#Toggle-Button').fadeIn();
+    } else {
+      $('#Toggle-Button').css('visibility', 'hidden');
+      $('#Toggle-Button').fadeOut();
+    }
+  });
+
+  //Click event to scroll to top
+  $('#Toggle-Button').click(function() {
+    $('html, body').animate({ scrollTop: 0 }, 800);
+    return false;
+  });
+  loadTweets();
 });
+

@@ -17,3 +17,24 @@
 .profile-h2 strong{
   font-weight: 700;
 }
+
+@media screen and (min-width: 1024px){
+  .profile{
+    margin: 12rem 4rem;
+    height: 400px;
+    width: 30%;
+    display: flex;
+    flex-direction : column;
+    justify-content : center;
+    align-items: center;
+    color: #ffffff;
+  }
+  .profile-h2{
+    font-size: 24px;
+    font-weight: 300;
+  }
+  .profile-h2 strong{
+    font-weight: 700;
+  }
+  
+}
